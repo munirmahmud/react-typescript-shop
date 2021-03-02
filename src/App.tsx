@@ -1,10 +1,4 @@
-import {
-  Container,
-  Drawer,
-  Grid,
-  LinearProgress,
-  Typography,
-} from "@material-ui/core";
+import { Container, Drawer, Grid } from "@material-ui/core";
 import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
@@ -20,7 +14,7 @@ export type ProductItem = {
   image: string;
   price: number;
   title: string;
-  amount: string;
+  amount: number;
 };
 
 const getProducts = async (): Promise<ProductItem[]> => {
@@ -33,7 +27,15 @@ const App = (): JSX.Element => {
   const [cartItems, setCartItems] = useState([] as ProductItem[]);
   const { data, isLoading, error } = useQuery("produadsfadscts", getProducts);
 
-  const getTotalProducts = () => null;
+  const getTotalProducts = (cartItems: ProductItem[]) => {
+    const totals = cartItems.reduce(
+      (total: number, item) => total + item.amount,
+      0
+    );
+
+    return totals;
+  };
+
   const handleAddToCart = (item: ProductItem) => {
     console.log(item);
 
@@ -41,25 +43,16 @@ const App = (): JSX.Element => {
   };
   const handleRemoveFromCart = (id: number) => {};
 
-  if (isLoading) {
-    return <LinearProgress />;
-  }
-
-  if (error) {
-    return (
-      <Typography variant="subtitle1" color="primary">
-        Something went worng
-      </Typography>
-    );
-  }
-
   return (
     <Container>
       <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
         Cart Goes here
       </Drawer>
       <StyledIconButton aria-label="cart" onClick={() => setCartOpen(true)}>
-        <StyledBadge badgeContent={4} color="secondary">
+        <StyledBadge
+          badgeContent={getTotalProducts(cartItems)}
+          color="secondary"
+        >
           <AddShoppingCartIcon />
         </StyledBadge>
       </StyledIconButton>
