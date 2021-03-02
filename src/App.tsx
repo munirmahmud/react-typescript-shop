@@ -3,6 +3,7 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { StyledBadge, StyledIconButton } from "./App.styles";
+import Cart from "./components/Cart";
 import Product from "./components/Product";
 
 const url = `https://fakestoreapi.com/products`;
@@ -32,6 +33,7 @@ const App = (): JSX.Element => {
       (total: number, item) => total + item.amount,
       0
     );
+    console.log(totals);
 
     return totals;
   };
@@ -46,7 +48,11 @@ const App = (): JSX.Element => {
   return (
     <Container>
       <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
-        Cart Goes here
+        <Cart
+          cartItems={cartItems}
+          addToCart={handleAddToCart}
+          removeFromCart={handleRemoveFromCart}
+        />
       </Drawer>
       <StyledIconButton aria-label="cart" onClick={() => setCartOpen(true)}>
         <StyledBadge
