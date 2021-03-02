@@ -38,10 +38,19 @@ const App = (): JSX.Element => {
     return totals;
   };
 
-  const handleAddToCart = (item: ProductItem) => {
-    console.log(item);
+  const handleAddToCart = (product: ProductItem) => {
+    setCartItems((prevState) => {
+      // Is the item already in the cart?
+      const isItemInCart = prevState.find((item) => item.id === product.id);
 
-    return item;
+      if (isItemInCart) {
+        return prevState.map((item) =>
+          item.id === product.id ? { ...item, amount: item.amount + 1 } : item
+        );
+      }
+
+      return [...prevState, { ...product, amount: 1 }];
+    });
   };
   const handleRemoveFromCart = (id: number) => {};
 
