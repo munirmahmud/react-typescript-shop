@@ -1,6 +1,14 @@
-import { Container, Grid, LinearProgress, Typography } from "@material-ui/core";
+import {
+  Container,
+  Drawer,
+  Grid,
+  LinearProgress,
+  Typography,
+} from "@material-ui/core";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 import React, { useState } from "react";
 import { useQuery } from "react-query";
+import { StyledBadge, StyledIconButton } from "./App.styles";
 import Product from "./components/Product";
 
 const url = `https://fakestoreapi.com/products`;
@@ -47,6 +55,15 @@ const App = (): JSX.Element => {
 
   return (
     <Container>
+      <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)}>
+        Cart Goes here
+      </Drawer>
+      <StyledIconButton aria-label="cart" onClick={() => setCartOpen(true)}>
+        <StyledBadge badgeContent={4} color="secondary">
+          <AddShoppingCartIcon />
+        </StyledBadge>
+      </StyledIconButton>
+
       <Grid container spacing={2}>
         {data?.length &&
           data?.map((product) => (
