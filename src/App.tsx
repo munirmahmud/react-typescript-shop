@@ -52,7 +52,20 @@ const App = (): JSX.Element => {
       return [...prevState, { ...product, amount: 1 }];
     });
   };
-  const handleRemoveFromCart = (id: number) => {};
+
+  const handleRemoveFromCart = (id: number) => {
+    setCartItems((prevState) =>
+      prevState.reduce((total, item) => {
+        if (item.id === id) {
+          if (item.amount === 1) return total;
+
+          return [...total, { ...item, amount: item.amount - 1 }];
+        } else {
+          return [...total, item];
+        }
+      }, [] as ProductItem[])
+    );
+  };
 
   return (
     <Container>
